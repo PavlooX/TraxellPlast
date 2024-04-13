@@ -1,0 +1,13 @@
+{% load static %}
+
+{% if type == 'one' %}
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 button-text button {% if buttons.0.disabled %} disabled {% endif %}" onclick="{{ buttons.0.onclick }}" id="{{ buttons.0.index }}_button_div">
+    <h1 id="{{ buttons.0.index }}_button_text">{{ buttons.0.text }}</h1>
+</div>
+{% elif type == 'two' %}
+{% for b in buttons %}
+    <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6 button-image {% if b.delete %} button-delete {% else %} button {% endif %}" onclick="{{ b.onclick }}">
+        <img src="{{ b.image }}">
+    </div>
+{% endfor %}
+{% endif %}

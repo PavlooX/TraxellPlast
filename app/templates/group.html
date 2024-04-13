@@ -1,0 +1,21 @@
+{% load customtags %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group {% if last == True %} last {% endif %}">
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+        <img src="{{ image }}">
+    </div>
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+        {% if more %}
+        {% for x in more %}  
+            <div class="list {% if forloop.last %} last {% endif %}">
+                <h1>{{ x.0 }}</h1>
+                <h2>{{ x.1|floatformat:'g' }}</h2>
+            </div>
+        {% endfor %}
+        {% else %}
+            <h1>{{ title }}</h1>
+            {% if content or content == 0 %} <h2>{{ content }}</h2> {% endif %}
+            {% if content_bold %} <h3>{{ content_bold }}</h3> {% endif %}
+        {% endif %}
+    </div>
+</div>

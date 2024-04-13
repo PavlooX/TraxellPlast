@@ -1,0 +1,18 @@
+{% load static %}
+
+<div class="{% if right %} col-xl-8 col-lg-6 {% else %} col-xl-12 col-lg-12 {% endif %} col-md-12 col-sm-12 col-12 text">
+    <h1>{{ title }}</h1>
+    {% if subtitle %} <h2>{{ subtitle }}</h2> {% endif %}
+</div>
+
+{% if right %}
+<div class="col-xl-4 col-lg-6 col-md-12 col-sm-12 col-12 right">
+    {% if image %}
+    <div class="image" onclick="event.stopPropagation(); {% if url_open_type == 'current_page' %} openPage( {% elif url_open_type == 'new_page' %} newPage( {% endif %} '{{ right_url }}')">
+        <img src="{{ image }}">
+    </div>
+    {% else %}
+    <h1>{{ right }}</h1>
+    {% endif %}
+</div>
+{% endif %}

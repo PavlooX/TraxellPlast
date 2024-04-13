@@ -1,0 +1,63 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+{% if users %}
+<form method="get">
+    <div class="container select">
+        <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 left">
+            <h1>SORT BY</h1>
+            <select class="form-select" name="sort" onchange="this.form.submit()">
+                {% for choice in user_sort_choices %}
+                    <option value="{{ choice.0 }}" {% if sort == choice.0 %} selected {% endif %}>{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        {% include 'year_select.html' %}
+    </div>
+</form>
+
+{% for user in users %}
+
+    {% user_orders user selected_year as orders %}
+    {% user_count_orders user selected_year as orders_count %}
+    {% user_orders_total_price user selected_year as orders_total_price %}
+    {% if orders_count > 0 %} {% url 'user_analysis_view' id=user.id as pre_url %} {% url_parameters pre_url year=selected_year as url %} {% endif %}
+        
+    <div class="container main">
+        <div class="row top {% if orders_count > 0 %} button" onclick="toggleContent({{ forloop.counter }})" {% else %} " {% endif %} >
+            {% if orders_count > 0 %} {% header title=user.full_name subtitle=selected_year|year_format right='analyze' right_url=url %} {% group type='orders' content=orders_count %} {% group type='price' content=orders_total_price|floatformat:'-2g'|euro %} {% arrow id=forloop.counter %} {% else %}
+            {% header title=user.full_name subtitle=selected_year|year_format %} {% group type='orders' content=orders_count last=True %} {% endif %}
+        </div>
+
+        {% if orders_count > 0 %}
+        <div class="row middle-submain collapse" id="content_{{ forloop.counter }}">
+
+            {% for order in orders %}
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %} clickable" onclick="newPage('{% url 'order_view' id=order.id %}')">
+                    <div class="row top">
+                        {% header title=order.id|order_format right=order.ordered_date|date:'j.n.Y. G:i' %}
+                    </div>
+                    <div class="row middle">
+                        {% group type='status' content=order.get_order_status_display|status_date:order %}
+                        {% group type='items' content=order.items_count %}
+                        {% group type='amount' content=order.amount|floatformat:'g' %}
+                        {% group type='price' content=order.price|floatformat:'-2g'|euro last=True %}
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+        {% endif %}
+    </div>
+
+{% endfor %}    
+
+{% else %}
+<div class="empty">
+    <h1>No users</h1>
+</div>
+{% endif %}
+{% endblock %}

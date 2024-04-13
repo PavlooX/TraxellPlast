@@ -1,0 +1,39 @@
+{% load static %}
+{% load customtags %}
+
+{% with current_page=request.resolver_match.url_name %}
+<div class="navbar-container fixed-top">
+    <div class="hide-top"></div>
+
+    <div class="row navbar">
+        <div class="col-xl-3 col-lg-9 col-md-9 col-sm-9 col-9 home-container {% if type == 'user' %} clickable" onclick="openPage('{% url 'home_view' %}')" {% else %} " {% endif %}>
+            <div class="home {% if type == 'guest' or current_page == 'home' %} selected {% endif %}">
+                <h1>TraxellPlast</h1>
+                <h2>SHOP</h2>
+            </div>
+        </div>
+
+        <div class="d-xl-none col-lg-3 col-md-3 col-sm-3 col-3 menu active" id="navbar_menu_div" onclick="toggleNavbarMenu()">
+            <img src="{% static 'images/menu.png' %}" id="navbar_menu_image">
+            <img src="{% static 'images/arrow.png' %}" id="navbar_close_image">
+        </div>
+
+        <div class="col-xl-9 col-lg-12 col-md-12 col-sm-12 col-12 collapse show" id="navbar_pages_div">
+            <div class="page-container">
+                {% if type == 'guest' %}
+                {% navbar_page page='login' current_page=current_page %}
+                {% navbar_page page='register' current_page=current_page %}
+
+                {% elif type == 'user' %}
+                {% navbar_page page='account' current_page=current_page %}
+                {% navbar_page page='products' current_page=current_page %}
+                {% if not request.user.is_admin %} {% navbar_page page='cart' current_page=current_page %} {% endif %}
+                {% navbar_page page='orders' current_page=current_page admin=request.user.is_admin %}
+                {% if request.user.is_admin %} {% navbar_page page='users' current_page=current_page %} {% navbar_page page='financy' current_page=current_page %} {% endif %}
+                {% navbar_page page='logout' current_page=current_page %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endwith %}

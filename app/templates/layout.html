@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+{% include 'head.html' %}
+
+<body>
+    {% include 'navbar.html' with type='user' %}
+
+    <div class="page-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% include 'cartbar.html' %}
+
+    {% include 'scripts.html' %}
+    {% block scripts %}{% endblock %}
+</body>
+</html>

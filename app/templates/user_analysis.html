@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+{% include 'head.html' %}
+{% load static %}
+{% load customtags %}
+
+<body>
+    {% user_count_orders user selected_year as orders_count %}
+    {% user_orders_by_months user selected_year as months %}
+    {% user_orders_total_price user selected_year as orders_total_price %}
+    {% user_items user selected_year as items %}
+
+    <div class="container main">
+        <div class="row top">
+            {% header title=user.full_name subtitle=selected_year|year_format %}
+
+            {% group type='orders' content=orders_count %}
+            {% group type='months' more=months %}
+            {% group type='price' content=orders_total_price|floatformat:'-2g'|euro last=True %}
+        </div>
+        <div class="row middle-submain">
+
+            {% for item in items %}
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %}">
+                    <div class="row top">
+                        {% header title=item.name|sequence:forloop.counter %}
+                    </div>
+                    <div class="row middle">
+                        {% group type='material' more=item.materials_list %}
+                        {% group type='color' more=item.colors_list %}
+                        {% group type='amount' content=item.amount|floatformat:'g' %}
+                        {% group type='price' content=item.price|floatformat:'-2g'|euro last=True %}
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+
+    {% include 'scripts.html' %}
+</body>
+</html>

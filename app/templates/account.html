@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+<div class="container main">
+    <div class="row top">
+        {% header title='EDIT ACCOUNT DETAILS' %}
+    </div>
+    <div class="row middle-content input">
+        {% group_input type='customer_edit' context=user %}
+        {% group_input type='email_edit' context=user %}
+        {% group_input type='location_edit' context=user %}
+        {% group_input type='phone_edit' context=user last=True %}
+
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text">
+            <h1>* indicates a required field</h1>
+        </div>
+        {% include 'failed_text.html' %}
+    </div>
+    <div class="row bottom">
+        {% button type='one' a='account_save' %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'scripts/account.js' %}"
+        defer
+        data-account-save-url="{% url 'account_save' %}"
+        data-home-view-url="{% url 'home_view' %}"
+        data-logout-account-url="{% url 'logout_account' %}"></script>
+{% endblock %}

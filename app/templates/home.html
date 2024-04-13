@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+<div class="container main">
+    <div class="row top">
+        {% url 'account_view' as url %}
+        {% header title='ACCOUNT DETAILS' right='edit' right_url=url %}
+
+        {% group type='customer' content=user.full_name %}
+        {% group type='email' content=user.email %}
+        {% if user.phone %} {% group type='location' content=user.location %} {% group type='phone' content=user.phone last=True %} {% else %}
+        {% group type='location' content=user.location last=True %} {% endif %}
+    </div>
+</div>
+
+<div class="container main">
+    <div class="row top {% if messages %} button" onclick="toggleContent(1)" {% else %} " {% endif %} >
+        {% header title='NOTIFICATIONS' %}
+
+        {% if messages %} {% group type='messages' content=messages.count %} {% arrow id=1 %} {% else %}
+        {% group type='messages' content=messages.count last=True %} {% endif %}
+    </div>
+
+    {% if messages %}
+    <div class="row middle-submain collapse" id="content_1">
+
+        {% for message in messages %}
+
+            {% if message.type == message_choices.0.0 %}
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %}">
+                <div class="row top">
+                    {% header title=message.content right=message.date|date:'j.n.Y. G:i' %}
+                </div>
+            </div>
+
+            {% elif message.type == message_choices.1.0 %}
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %}">
+                <div class="row top">
+                    {% header title=message.content right=message.date|date:'j.n.Y. G:i' %}
+                </div>
+                <div class="row middle">
+                    {% group type='customer' content=message.order.user.full_name %}
+                    {% group type='price' content=message.order.price|floatformat:'-2g'|euro last=True %}
+                </div>
+            </div>
+
+            {% elif message.type == message_choices.2.0 %}
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %}">
+                <div class="row top">
+                    {% header title=message.content right=message.date|date:'j.n.Y. G:i' %}
+                </div>
+                <div class="row middle">
+                    {% if user.is_admin %} {% group type='customer' content=message.order.user.full_name %} {% endif %}
+                    {% if message.order_status_date %} {% group type='status' content=message.get_order_status_display %} {% group type='status_date' content=message.order_status_date|date:'j.n.Y.' context=message last=True %} {% else %}
+                    {% group type='status' content=message.get_order_status_display last=True %} {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

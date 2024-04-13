@@ -1,0 +1,31 @@
+{% load static %}
+
+<div class="modal fade" id="popup">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">  
+            <div class="container popup">
+
+                <div class="row top">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text">
+                        <h1 id="popup_name_text" />
+                    </div>
+                </div>
+
+                <div class="row middle-content">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text">
+                        <p id="popup_content_text" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'popup_close.html' %}
+</div>
+
+{% block scripts %}
+<script src="{% static 'scripts/approval_popup.js' %}"
+        defer
+        data-login-view-url="{% url 'login_view' %}"></script>
+{% endblock %}

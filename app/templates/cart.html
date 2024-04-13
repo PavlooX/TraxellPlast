@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+{% if cart %}
+<div class="container main">
+    <div class="row top">
+        {% header title='CART' %}
+
+        {% group type='items' content=cart.count_items %}
+        {% group type='amount' content=cart.total_amount|floatformat:'g' %}
+        {% group type='price' content=cart.total_price|floatformat:'-2g'|euro last=True %}
+    </div>
+    <div class="row middle-submain">
+        {% for item in cart.items.all %}
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %}">
+                <div class="row top">
+                    {% header title=item.product.name|sequence:forloop.counter %}
+                </div>
+                <div class="row middle">
+                    {% group type='material' content=item.material.get_name_display %}
+                    {% if item.color.name == 'custom' %} {% group type='color' content=item.custom_color %} {% else %} {% group type='color' content=item.color.get_name_display %} {% endif %}
+                    {% group type='amount' content=item.amount|floatformat:'g' %}
+                    {% group type='price_detailed' content_bold=item.price|floatformat:'-2g'|euro context=item last=True %}
+                </div>
+                <div class="row bottom">
+                    {% button type='two' a='cart_delete' b='item_popup' context=item %}
+                </div>                
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row bottom">
+        {% button type='two' a='cart_delete_all' b='cart_submit' %}
+    </div>   
+</div>
+{% else %}
+<div class="empty">
+    <h1>Cart empty</h1>
+</div>
+{% endif %}
+{% include 'product_popup.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'scripts/cart.js' %}"
+        defer
+        data-cart-delete-url="{% url 'cart_delete' %}"
+        data-cart-delete-all-url="{% url 'cart_delete_all' %}"
+        data-cart-submit-url="{% url 'cart_submit' %}"
+        data-orders-view-url="{% url 'orders_view' %}"></script>
+{% endblock %}

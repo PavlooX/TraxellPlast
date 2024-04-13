@@ -1,0 +1,35 @@
+{% extends 'layout_guest.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+<div class="container main">
+    <div class="row top">
+        {% header title='REGISTER' %}
+    </div>
+    <div class="row middle-content input">
+        {% group_input type='customer_reg' %}
+        {% group_input type='email_reg' %}
+        {% group_input_password type='password_reg' %}
+        {% group_input type='location_reg' %}
+        {% group_input type='phone_reg' last=True %}
+
+        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text">
+            <h1>* indicates a required field</h1>
+        </div>
+        {% include 'failed_text.html' %}
+    </div>
+    <div class="row bottom">
+        {% button type='one' a='register' %}
+    </div>
+</div>
+{% include 'approval_popup.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'scripts/register.js' %}"
+        defer
+        data-register-account-url="{% url 'register_account' %}"
+        data-visibility-on="{% static 'images/visibility_on.png' %}"
+        data-visibility-off="{% static 'images/visibility_off.png' %}"></script>
+{% endblock %}

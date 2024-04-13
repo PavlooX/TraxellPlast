@@ -1,0 +1,9 @@
+<div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 right">
+    <h1>YEAR</h1>
+    <select class="form-select" name="year" onchange="this.form.submit()">
+        <option value="all" {% if selected_year == 'all' %} selected {% endif %}>All</option>
+        {% for year in years %}
+            <option value="{{ year }}" {% if selected_year == year %} selected {% endif %}>{{ year }}.</option>
+        {% endfor %}
+    </select>
+</div>

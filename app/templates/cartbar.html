@@ -1,0 +1,29 @@
+{% load static %}
+{% load customtags %}
+
+{% if cartbar %}
+<div class="cartbar-container fixed-bottom">
+    <div class="row cartbar" onclick="openPage('{% url 'cart_view' %}')">
+        <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2 col-2 left">
+            <img src="{% static 'images/cart.png' %}">
+        </div>
+        <div class="col-xl-10 col-lg-8 col-md-8 col-sm-8 col-8 middle">
+            <div>
+                <h1>ITEMS</h1>
+                <h2>{{ cartbar.count_items }}</h2>
+            </div>
+            <div>
+                <h1>AMOUNT</h1>
+                <h2>{{ cartbar.total_amount|floatformat:'g' }}</h2>
+            </div>
+            <div>
+                <h1>TOTAL PRICE</h1>
+                <h2>{{ cartbar.total_price|floatformat:'-2g'|euro }}</h2>
+            </div>
+        </div>
+        <div class="col-xl-1 col-lg-2 col-md-2 col-sm-2 col-2 right">
+            <img src="{% static 'images/arrow.png' %}">
+        </div>
+    </div>
+</div>
+{% endif %}

@@ -1,0 +1,30 @@
+{% extends 'layout_guest.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+<div class="container main">
+    <div class="row top">
+        {% header title='LOG IN' %}
+    </div>
+    <div class="row middle-content input">
+        {% group_input type='email_login' %}
+        {% group_input_password type='password_login' last=True %}
+
+        {% include 'failed_text.html' %}
+    </div>
+    <div class="row bottom">
+        {% button type='one' a='login' %}
+    </div>
+</div>
+{% include 'approval_popup.html' %}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'scripts/login.js' %}"
+        defer
+        data-login-account-url="{% url 'login_account' %}"
+        data-home-view-url="{% url 'home_view' %}"
+        data-visibility-on="{% static 'images/visibility_on.png' %}"
+        data-visibility-off="{% static 'images/visibility_off.png' %}"></script>
+{% endblock %}

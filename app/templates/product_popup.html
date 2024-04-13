@@ -1,0 +1,89 @@
+{% load static %}
+{% load customtags %}
+
+<div class="modal fade" id="popup">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">            
+            <div class="container popup">
+
+                <div class="row top">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text">
+                        <h1 id="popup_name_text" />
+                    </div>
+                </div>
+
+                <div class="row middle-content">
+                    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 left" id="popup_left_div"></div>
+
+                    <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 row right">
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group input">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+                                <img src="{% static 'images/material.png' %}" id="popup_material_image">
+                            </div>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+                                <h1>MATERIAL</h1>
+                                <select class="form-select" id="popup_material_select" onchange="onMaterialChange()">
+                                    <option value="0" selected>Select material</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group input">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+                                <img src="{% static 'images/color.png' %}" id="popup_color_image">
+                            </div>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+                                <h1>COLOR</h1>
+                                <select class="form-select" id="popup_color_select" onchange="onColorChange()">
+                                    <option value="0" selected>Select color</option>
+                                </select>
+                                <input type="color" class="form-control custom-color-input" id="popup_custom_color_input" value="#33C4A9" title="Choose your color">
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group input">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+                                <img src="{% static 'images/amount.png' %}" id="popup_amount_image">
+                            </div>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+                                <h1>AMOUNT</h1>
+                                <input type="number" class="form-control" id="popup_amount_input" onchange="onAmountChange()">
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group last">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+                                <img src="{% static 'images/price.png' %}">
+                            </div>
+                            <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+                                <h1>TOTAL PRICE</h1>
+                                <h2 id="popup_total_price_1_text" />
+                                <h3 id="popup_total_price_2_text" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row bottom">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 button-text button" id="popup_button_div">
+                        <h1 id="popup_button_text" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'popup_close.html' %}
+</div>
+
+{% block scripts %}
+<script src="{% static 'scripts/product_popup.js' %}"
+        defer
+        data-product-popup-url="{% url 'product_popup' %}"
+        data-item-popup-url="{% url 'item_popup' %}"
+        data-cart-add-url="{% url 'cart_add' %}"
+        data-cart-save-url="{% url 'cart_save' %}"></script>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+{% include 'head.html' %}
+{% load static %}
+{% load customtags %}
+
+<body>
+    <div class="container main">
+        <div class="row top">
+            {% header title=order.id|order_format right=order.ordered_date|date:'j.n.Y. G:i' %}
+
+            {% group type='customer' content=order.user.full_name %}
+            {% group type='status' content=order.get_order_status_display|status_date:order %}
+            {% group type='items' content=order.items_count %}
+            {% group type='amount' content=order.amount|floatformat:'g' %}
+            {% group type='price' content=order.price|floatformat:'-2g'|euro last=True %}
+        </div>
+        <div class="row middle-submain">
+            {% for item in order.items.all %}
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %}">
+                    <div class="row top">
+                        {% header title=item.product.name|sequence:forloop.counter %}
+                    </div>
+                    <div class="row middle">
+                        {% group type='material' content=item.material.get_name_display %}
+                        {% if item.color.name == 'custom' %} {% group type='color' content=item.custom_color %} {% else %} {% group type='color' content=item.color.get_name_display %} {% endif %}
+                        {% group type='amount' content=item.amount|floatformat:'g' %}
+                        {% group type='price_detailed' content_bold=item.price|floatformat:'-2g'|euro context=item last=True %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        {% include 'status_dates.html' %}
+    </div>
+
+    {% include 'order_popup.html' %}
+
+    {% include 'scripts.html' %}
+</body>
+</html>

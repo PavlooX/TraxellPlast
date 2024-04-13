@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+{% for product in products %}
+    <div class="container main smaller">
+        <div class="row top">
+            {% header title=product.name|sequence:forloop.counter subtitle=product.description %}
+
+            {% if user.is_admin and not product.public %} {% group_list_all type='product_exclusive' content=product.exclusive_for.all last=True %} {% endif %}
+        </div>
+        <div class="row middle-content">
+            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 left">
+                {% model_viewer source=product.model_url %}
+            </div>
+            <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 row right">
+                {% group_list_all type='material' content=product.materials.all %}
+                {% group_list_all type='price' content=product.materials.all %}
+                {% group_list_all type='color' content=product.colors.all %}
+                {% group_files type='product' context=product last=True %}
+            </div>
+        </div>
+        {% if not user.is_admin %}
+        <div class="row bottom">
+            {% button type='one' a='product_popup' context=product id=forloop.counter %}
+        </div>  
+        {% endif %}
+    </div>
+{% endfor %}
+{% include 'product_popup.html' %}
+{% endblock %}

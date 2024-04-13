@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+{% include 'head_guest.html' %}
+
+<body>
+    {% include 'navbar.html' with type='guest' %}
+
+    <div class="page-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% include 'scripts_guest.html' %}
+    {% block scripts %}{% endblock %}
+</body>
+</html>

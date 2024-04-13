@@ -1,0 +1,67 @@
+{% load static %}
+{% load customtags %}
+
+<div class="modal fade" id="popup">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">    
+            <div class="container popup">
+
+                <div class="row top">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text">
+                        <h1 id="popup_name_text"/>
+                    </div>
+                </div>
+
+                <div class="row middle-content input">
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group input">
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+                            <img src="{% static 'images/status.png' %}" id="popup_status_image">
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+                            <h1>STATUS</h1>
+                            <select class="form-select" id="popup_order_status_select"></select>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group input">
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+                            <img src="{% static 'images/in_process.png' %}" id="popup_in_process_image">
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+                            <h1>IN PROCESS DATE</h1>
+                            <input type="text" class="form-control" id="popup_in_process_datepicker" placeholder="Choose date" onchange="onDateChange(this)">
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group input last">
+                        <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+                            <img src="{% static 'images/shipped.png' %}" id="popup_shipped_image">
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+                            <h1>SHIPPED DATE</h1>
+                            <input type="text" class="form-control" id="popup_shipped_datepicker" placeholder="Choose date" onchange="onDateChange(this)">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row bottom">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 button-text button" id="popup_button_div" onclick="orderSave()">
+                        <h1 id="popup_button_text"/>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    {% include 'popup_close.html' %}
+</div>
+
+{% block scripts %}
+<script src="{% static 'scripts/order_popup.js' %}"
+        defer
+        data-order-popup-url="{% url 'order_popup' %}"
+        data-order-save-url="{% url 'order_save' %}"></script>
+{% endblock %}

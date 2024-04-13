@@ -1,0 +1,16 @@
+{% load static %}
+{% load customtags %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group file {% if last == True %} last {% endif %} ">
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+        <img src="{% static 'images/dimensions.png' %}">
+    </div>
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+        {% for x in content %}  
+            <div class="list {% if forloop.last %} last {% endif %}">
+                <h1>{{ x.0 }}</h1>
+                <img src="{% static 'images/download.png' %}">
+            </div>
+        {% endfor %}
+    </div>
+</div>

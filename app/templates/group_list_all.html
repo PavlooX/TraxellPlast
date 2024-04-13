@@ -1,0 +1,13 @@
+{% load customtags %}
+
+<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 row group {% if last == True %} last {% endif %} ">
+    <div class="col-xl-2 col-lg-2 col-md-2 col-sm-3 col-3 image">
+        <img src="{{ image }}">
+    </div>
+    <div class="col-xl-10 col-lg-10 col-md-10 col-sm-9 col-9 text">
+        <h1>{{ title }}</h1>
+        {% for x in content %}  
+            <h2>{{ x }}</h2>
+        {% endfor %}
+    </div>
+</div>

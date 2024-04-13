@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load customtags %}
+
+{% block content %}
+<form method="get">
+    <div class="container select">
+
+        {% if orders %}  
+        <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 {% if user.is_admin %} left {% else %} right {% endif %}">
+            <h1>SORT BY</h1>
+            <select class="form-select" name="sort" onchange="this.form.submit()">
+                {% for choice in order_sort_choices %}
+                    <option value="{{ choice.0 }}" {% if sort == choice.0 %} selected {% endif %}>{{ choice.1 }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
+
+        {% if user.is_admin %} {% include 'year_select.html' %} {% endif %}
+    </div>
+</form>
+
+{% if orders %}   
+{% for order in orders %}
+    <div class="container main">
+        <div class="row top button" onclick="toggleContent({{ forloop.counter }})">
+            {% header title=order.id|order_format right=order.ordered_date|date:'j.n.Y. G:i' %}
+
+            {% if user.is_admin %} {% group type='customer' content=order.user.full_name %} {% endif %}
+            {% group type='status' content=order.get_order_status_display|status_date:order %}
+            {% group type='items' content=order.items_count %}
+            {% group type='amount' content=order.amount|floatformat:'g' %}
+            {% group type='price' content=order.price|floatformat:'-2g'|euro %}
+            {% arrow id=forloop.counter %}
+        </div>
+        <div class="row collapse" id="content_{{ forloop.counter }}">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                <div class="row middle-submain">
+                    {% for item in order.items.all %}
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 submain {% if forloop.last %} last {% endif %}">
+                            <div class="row top">
+                                {% header title=item.product.name|sequence:forloop.counter %}
+                            </div>
+                            <div class="row middle">
+                                {% group type='material' content=item.material.get_name_display %}
+                                {% if item.color.name == 'custom' %} {% group type='color' content=item.custom_color %} {% else %} {% group type='color' content=item.color.get_name_display %} {% endif %}
+                                {% group type='amount' content=item.amount|floatformat:'g' %}
+                                {% group type='price_detailed' content_bold=item.price|floatformat:'-2g'|euro context=item last=True %}
+                            </div>             
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                {% include 'status_dates.html' %}
+            </div>   
+        </div>
+    </div>
+{% endfor %}	
+{% else %}
+<div class="empty">
+    <h1>No orders</h1>
+</div>
+{% endif %}
+
+{% if user.is_admin %} {% include 'order_popup.html' %} {% endif %}
+
+{% endblock %}
+
